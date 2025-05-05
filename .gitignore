@@ -48,8 +48,9 @@ compile_commands.json
 # Keil MDK‑ARM (*.uvproj, *.uvopt)
 # ===============================
 # 工程文件
-*.uvproj*
+# *.uvproj*
 *.uvopt*
+*.uvguix.*
 *.map
 
 # 输出目录
