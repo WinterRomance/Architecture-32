@@ -50,6 +50,7 @@ compile_commands.json
 # 工程文件
 *.uvproj*
 *.uvopt*
+*.map
 
 # 输出目录
 /*.axf
