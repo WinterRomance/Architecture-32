@@ -50,7 +50,7 @@ compile_commands.json
 # 工程文件
 # *.uvproj*
 *.uvopt*
-*.uvguix.ll520
+*.ll520
 *.map
 
 # 输出目录
