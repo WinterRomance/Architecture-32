@@ -1,0 +1,128 @@
+# ===============================
+# 通用：操作系统 & 编辑器
+# ===============================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# 临时编辑器文件
+*~
+*.swp
+*.swo
+*.tmp
+*.bak
+
+# ===============================
+# 编译输出目录
+# ===============================
+# 通用 Makefile / CMake 构建目录
+/build/
+/out/
+/bin/
+/obj/
+/Debug/
+/Release/
+/_Release/
+/_build/
+/CMakeFiles/
+/CMakeCache.txt
+Makefile
+cmake_install.cmake
+compile_commands.json
+
+# ===============================
+# GD32 / STM32 HAL & LL 库
+# ===============================
+# 如果你将厂商库也放在项目中，可忽略编译输出
+*/Drivers/**/build/
+*/Drivers/**/lib/
+*/CMSIS/**/build/
+
+# ===============================
+# Keil MDK‑ARM (*.uvproj, *.uvopt)
+# ===============================
+# 工程文件
+*.uvproj*
+*.uvopt*
+
+# 输出目录
+/*.axf
+/*.bak
+/*.hex
+/*.o
+/*.lib
+/*.dep
+/*.lst
+/*.map
+
+# Keil 中间文件
+*.ilk
+*.pdb
+Objects/
+
+# ===============================
+# IAR Embedded Workbench (*.eww, *.ewp)
+# ===============================
+*.eww
+*.ewp
+*.ewd
+*.ewt
+/*.out
+/*.exe
+*.dep
+*.d
+
+# ===============================
+# STM32CubeIDE / Eclipse
+# ===============================
+# 工程配置
+/.project
+/.cproject
+/.settings/
+/*.launch
+
+# 构建产物
+/bin/
+/Debug*/
+/Release*/
+
+# ===============================
+# 8051（SDCC、Keil C51 等）
+# ===============================
+# SDCC 默认输出
+*.asm
+*.lst
+*.sym
+/*.ihx
+/*.hex
+/*.rel
+/*.rst
+
+# Keil C51
+/*.krn
+/*.lib
+
+# ===============================
+# 烧录工具 & 日志
+# ===============================
+*.log
+*.jlink
+*.stlink
+*.bin    # 若不需要将最终固件保存在仓库
+*.elf
+
+# ===============================
+# 其他可选项
+# ===============================
+# 如果使用 Python 脚本或其他工具
+*.pyc
+__pycache__/
+
+# 用户自定义忽略，可根据项目需要调整
+# eg. .vscode/, .idea/
