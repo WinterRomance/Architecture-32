@@ -10,105 +10,6 @@ static void HAL_GPIO_Init(void);
 static void HAL_TIMER_Init(void);
 static void HAL_DMA_Init(void);
 
-void WS2812_Init(void)
-{
-    memset(led_buffer, 0, sizeof(led_buffer));
-    memset(reset_frame, 0, sizeof(reset_frame));
-
-    HAL_GPIO_Init();
-    HAL_TIMER_Init();
-    HAL_DMA_Init();
-}
-
-WS2812_Status WS2812_SetColor(uint16_t index, WS2812_Color color, uint8_t brightness)
-{
-    if (index >= WS2812_LED_NUM)
-        return WS2812_ERR_INVALID_PARAM;
-
-    // 亮度调整（定点数运算优化）
-    uint32_t g = (color.green * brightness) / 100;
-    uint32_t r = (color.red * brightness) / 100;
-    uint32_t b = (color.blue * brightness) / 100;
-
-    // 生成PWM占空比序列
-    uint32_t color_packet = (g << 16) | (r << 8) | b;
-    for (uint8_t bit = 0; bit < WS2812_BITS_PER_LED; bit++)
-    {
-        led_buffer[index][bit] = (color_packet & (1UL << 23)) ? WS2812_HIGH_CCR : WS2812_LOW_CCR;
-        color_packet <<= 1;
-    }
-    return WS2812_OK;
-}
-
-WS2812_Status WS2812_LIUSHUI(void)
-{
-    static uint8_t pos = 0;         // 当前要点亮的像素
-    static uint8_t color_index = 0; // 当前颜色在表里的索引
-    // 七种颜色（正常 RGB 顺序）
-    const WS2812_Color colors[] = {
-        {255, 0, 0},    // 红
-        {255, 255, 0},  // 黄
-        {0, 255, 0},    // 绿
-        {0, 255, 255},  // 青
-        {0, 0, 255},    // 蓝
-        {255, 0, 255},  // 紫
-        {255, 255, 255} // 白
-    };
-    const uint8_t N = WS2812_LED_NUM;
-    const uint8_t C = sizeof(colors) / sizeof(colors[0]);
-
-    // —— 重建整条链 ——
-    for (uint16_t i = 0; i < N; i++)
-    {
-        if (i == pos)
-        {
-            // 当前位置：亮当前颜色，100% 亮度
-            WS2812_SetColor(i, colors[color_index], 100);
-        }
-        else
-        {
-            // 其它位置：灭灯（brightness = 0 会让 SetColor 全部填 低电平）
-            WS2812_SetColor(i, (WS2812_Color){0, 0, 0}, 0);
-        }
-    }
-    // 调试打印（修正数据类型）
-    debug_print_matrix((uint32_t *)led_buffer, RGB_ARRAY_SIZE, WS2812_BITS_PER_LED);
-    // —— 一次性发完整帧 ——
-    WS2812_Update();
-
-    // —— 更新索引 ——
-    pos = (pos + 1) % N;
-    if (pos == 0)
-    {
-        color_index = (color_index + 1) % C;
-    }
-
-    delay_1ms(300); // 调整速度
-    return WS2812_OK;
-}
-
-WS2812_Status WS2812_Update(void)
-{
-    if (dma_busy)
-        return WS2812_ERR_DMA_BUSY;
-
-    // 禁用旧传输
-    dma_channel_disable(DMA_CH1);
-
-    // 配置传输数据量（LED数据 + 复位帧）
-    uint32_t data_size = RGB_ARRAY_SIZE * WS2812_BITS_PER_LED;
-    dma_transfer_number_config(DMA_CH1, data_size);
-
-    // 启用DMA通道
-    dma_channel_enable(DMA_CH1);
-
-    // 启动定时器
-    timer_enable(TIMER1);
-
-    dma_busy = 1;
-    return WS2812_OK;
-}
-
 /* ------------------------- 硬件抽象层实现 ------------------------- */
 
 static void HAL_GPIO_Init(void)
@@ -194,5 +95,112 @@ static void HAL_DMA_Init(void)
     nvic_irq_enable(DMA_Channel1_2_IRQn, 1, 0);
 }
 
-// DMA 结束后回调
-void DMA_TransferComplete_Callback(void) { }
+void WS2812_Init(void)
+{
+    memset(led_buffer, 0, sizeof(led_buffer));
+    memset(reset_frame, 0, sizeof(reset_frame));
+
+    HAL_GPIO_Init();
+    HAL_TIMER_Init();
+    HAL_DMA_Init();
+}
+
+WS2812_Status WS2812_SetColor(uint16_t index, WS2812_Color color, uint8_t brightness)
+{
+    if (index >= WS2812_LED_NUM)
+        return WS2812_ERR_INVALID_PARAM;
+
+    // 亮度调整（定点数运算优化）
+    uint32_t g = (color.green * brightness) / 100;
+    uint32_t r = (color.red * brightness) / 100;
+    uint32_t b = (color.blue * brightness) / 100;
+
+    // 生成PWM占空比序列
+    uint32_t color_packet = (g << 16) | (r << 8) | b;
+    for (uint8_t bit = 0; bit < WS2812_BITS_PER_LED; bit++)
+    {
+        led_buffer[index][bit] = (color_packet & (1UL << 23)) ? WS2812_HIGH_CCR : WS2812_LOW_CCR;
+        color_packet <<= 1;
+    }
+    return WS2812_OK;
+}
+
+WS2812_Status WS2812_LIUSHUI(void)
+{
+    static uint8_t pos = 0;         // 当前要点亮的像素
+    static uint8_t color_index = 0; // 当前颜色在表里的索引
+
+    const uint8_t N = WS2812_LED_NUM;
+    const uint8_t C = sizeof(colors) / sizeof(colors[0]);
+
+    // —— 重建整条链 ——
+    for (uint16_t i = 0; i < N; i++)
+    {
+        if (i == pos)
+        {
+            // 当前位置：亮当前颜色，100% 亮度
+            WS2812_SetColor(i, colors[color_index], 100);
+        }
+        else
+        {
+            // 其它位置：灭灯（brightness = 0 会让 SetColor 全部填 低电平）
+            WS2812_SetColor(i, (WS2812_Color){0, 0, 0}, 0);
+        }
+    }
+    // —— 一次性发完整帧 ——
+    WS2812_Update();
+
+    // —— 更新索引 ——
+    pos = (pos + 1) % N;
+    if (pos == 0)
+    {
+        color_index = (color_index + 1) % C;
+    }
+
+    delay_1ms(50); // 调整速度
+    return WS2812_OK;
+}
+
+WS2812_Status WS2812_ALL_COLOR_CYCLE(uint16_t delay_ms)
+{
+    const uint8_t C = sizeof(colors) / sizeof(colors[0]);
+
+    // —— 2. 按顺序点亮每种颜色 ——
+    for (uint8_t idx = 0; idx < C; idx++)
+    {
+        // 2.1 全条灯带设为 colors[idx]，100% 亮度
+        for (uint8_t i = 0; i < WS2812_LED_NUM; i++)
+        {
+            WS2812_SetColor(i, colors[idx], 100);
+        }
+        // 2.2 一次性发送整帧数据（GRB 顺序，每 LED 24 bit）
+        // WS2812_Update 内部会按时序生成 ≥50μs 复位信号后刷新LED:contentReference[oaicite:1]{index=1}
+        WS2812_Update();
+
+        // 2.3 保持该颜色一定时间
+        delay_1ms(delay_ms);
+    }
+    return WS2812_OK;
+}
+
+WS2812_Status WS2812_Update(void)
+{
+    if (dma_busy)
+        return WS2812_ERR_DMA_BUSY;
+
+    // 禁用旧传输
+    dma_channel_disable(DMA_CH1);
+
+    // 配置传输数据量（LED数据 + 复位帧）
+    uint32_t data_size = RGB_ARRAY_SIZE * WS2812_BITS_PER_LED;
+    dma_transfer_number_config(DMA_CH1, data_size);
+
+    // 启用DMA通道
+    dma_channel_enable(DMA_CH1);
+
+    // 启动定时器
+    timer_enable(TIMER1);
+
+    dma_busy = 1;
+    return WS2812_OK;
+}

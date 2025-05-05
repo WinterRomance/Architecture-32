@@ -6,6 +6,7 @@
 #include "timer.h"
 #include "led.h"
 #include "ws2812_driver.h"
+#include "hal_ws2812.h"
 #include "usart.h"
 
 int main(void)
@@ -13,10 +14,10 @@ int main(void)
     systick_config();
     led_gpio_init();
     uart_init(115200);
-    WS2812_Init();
+    HAL_WS2812_Init();
     while (1)
     {
-        WS2812_ALL_COLOR_CYCLE(200);
+        WS2812_LIUSHUI();
         led_toggle();
     }
 }

@@ -10,7 +10,7 @@
 #include "led.h"
 
 // 灯带参数配置
-#define WS2812_LED_NUM 3                                      // 灯珠数量
+#define WS2812_LED_NUM 30                                     // 灯珠数量
 #define WS2812_RESET_FRAMES 3                                 // 复位帧数量
 #define WS2812_BITS_PER_LED 24                                // 每个灯珠数据位数
 #define RGB_ARRAY_SIZE (WS2812_LED_NUM + WS2812_RESET_FRAMES) // 多 3 灯位用于复位帧
@@ -35,8 +35,20 @@ typedef enum
     WS2812_ERR_INVALID_PARAM
 } WS2812_Status;
 
+// 七种颜色（正常 RGB 顺序）
+static const WS2812_Color colors[] = {
+    {255, 0, 0},    // 红
+    {255, 255, 0},  // 黄
+    {0, 255, 0},    // 绿
+    {0, 255, 255},  // 青
+    {0, 0, 255},    // 蓝
+    {255, 0, 255},  // 紫
+    {255, 255, 255} // 白
+};
+
 void WS2812_Init(void);
-void WS2812_DebugPrintBuffer(void);
+// void WS2812_DebugPrintBuffer(void);
+WS2812_Status WS2812_ALL_COLOR_CYCLE(uint16_t delay_ms);
 WS2812_Status WS2812_LIUSHUI(void);
 WS2812_Status WS2812_SetColor(uint16_t index, WS2812_Color color, uint8_t brightness);
 WS2812_Status WS2812_Update(void);

@@ -3,19 +3,24 @@
         {
             "name": "Target_1",
             "includePath": [
-                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\ws2812\\User",
-                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\ws2812\\BSP\\inc",
-                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\ws2812\\Libraries\\CMSIS",
-                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\ws2812\\Libraries\\CMSIS\\GD\\GD32F1x0\\Include",
-                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\ws2812\\Libraries\\GD32F1x0_standard_peripheral\\Include",
+                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\GD32F130C8T6_WS2812_SPI_DMA_V2.0\\User",
+                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\GD32F130C8T6_WS2812_SPI_DMA_V2.0\\Libraries\\CMSIS",
+                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\GD32F130C8T6_WS2812_SPI_DMA_V2.0\\Libraries\\CMSIS\\GD\\GD32F1x0\\Include",
+                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\GD32F130C8T6_WS2812_SPI_DMA_V2.0\\Libraries\\GD32F1x0_standard_peripheral\\Include",
+                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\GD32F130C8T6_WS2812_SPI_DMA_V2.0\\BSP\\WS2812\\APPlication",
+                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\GD32F130C8T6_WS2812_SPI_DMA_V2.0\\BSP\\WS2812\\HAL",
+                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\GD32F130C8T6_WS2812_SPI_DMA_V2.0\\BSP\\WS2812\\LL",
+                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\GD32F130C8T6_WS2812_SPI_DMA_V2.0\\BSP\\USART",
+                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\GD32F130C8T6_WS2812_SPI_DMA_V2.0\\BSP\\TIMER",
+                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\GD32F130C8T6_WS2812_SPI_DMA_V2.0\\BSP\\LED",
+                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\GD32F130C8T6_WS2812_SPI_DMA_V2.0\\BSP\\WS2812\\Common",
                 "C:\\Program_User\\KEIL\\ARM\\ARMCLANG\\include",
                 "C:\\Program_User\\KEIL\\ARM\\ARMCLANG\\include\\arm_linux",
                 "C:\\Program_User\\KEIL\\ARM\\ARMCLANG\\include\\arm_linux_compat",
                 "C:\\Program_User\\KEIL\\ARM\\ARMCLANG\\include\\libcxx",
-                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\ws2812\\BSP\\src",
-                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\ws2812\\Libraries\\GD32F1x0_standard_peripheral\\Source",
-                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\ws2812\\Libraries\\CMSIS\\GD\\GD32F1x0\\Source",
-                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\ws2812\\Libraries\\CMSIS\\GD\\GD32F1x0\\Source\\ARM"
+                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\GD32F130C8T6_WS2812_SPI_DMA_V2.0\\Libraries\\GD32F1x0_standard_peripheral\\Source",
+                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\GD32F130C8T6_WS2812_SPI_DMA_V2.0\\Libraries\\CMSIS\\GD\\GD32F1x0\\Source",
+                "e:\\02_Software\\Software\\Architecture-32\\GD32\\GD32F130C8T6\\GD32F130C8T6_WS2812_SPI_DMA_V2.0\\Libraries\\CMSIS\\GD\\GD32F1x0\\Source\\ARM"
             ],
             "defines": [
                 "__alignof__(x)=",
